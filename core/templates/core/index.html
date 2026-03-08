@@ -1,10 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <title>{% extends 'base.html' %}
+{% block content %}
+<!-- Hero -->
+<section class="bg-gradient-to-r from-blue-600 to-purple-600 text-white py-32 mb-20 rounded-3xl">
+    <div class="container mx-auto px-6 text-center">
+        <h1 class="text-6xl md:text-7xl font-bold mb-6 leading-tight">
+            Studio Fisio
+        </h1>
+        <p class="text-2xl md:text-3xl mb-12 opacity-90">
+            Treinos personalizados em Colatina-ES
+        </p>
+        <a href="{% url 'aulas_list' %}" class="inline-block bg-white text-blue-600 px-12 py-5 rounded-3xl text-xl font-bold hover:bg-gray-100 transform hover:scale-105 transition-all shadow-2xl">
+            <i class="fas fa-calendar-plus mr-3"></i>Agende Sua Aula
+        </a>
+    </div>
+</section>
+
+<!-- Stats -->
+<div class="grid md:grid-cols-3 gap-8 mb-20">
+    <div class="text-center p-8 bg-white rounded-3xl shadow-xl">
+        <div class="text-4xl font-bold text-blue-600 mb-2">{{ total_pacientes }}</div>
+        <div class="text-gray-600 font-semibold">Pacientes Ativos</div>
+    </div>
+    <div class="text-center p-8 bg-white rounded-3xl shadow-xl">
+        <div class="text-4xl font-bold text-green-600 mb-2">150+</div>
+        <div class="text-gray-600 font-semibold">Aulas/Mês</div>
+    </div>
+    <div class="text-center p-8 bg-white rounded-3xl shadow-xl">
+        <div class="text-4xl font-bold text-purple-600 mb-2">98%</div>
+        <div class="text-gray-600 font-semibold">Satisfação</div>
+    </div>
+</div>
+
+<!-- Últimas Aulas -->
+<section class="mb-20">
+    <h2 class="text-4xl font-bold text-gray-800 text-center mb-12">Próximas Aulas</h2>
+    <div class="grid md:grid-cols-3 gap-8">
+        {% for aula in ultimas_aulas %}
+        <div class="bg-white rounded-3xl shadow-xl p-8 hover:shadow-2xl transition-all hover:-translate-y-2 border-l-8 border-blue-500">
+            <div class="text-4xl font-bold text-gray-800 mb-4">{{ aula.horario|time:"H:i" }}</div>
+            <h3 class="text-2xl font-bold text-gray-800 mb-3">{{ aula.treino }}</h3>
+            <p class="text-gray-600 mb-4">{{ aula.paciente.nome }}</p>
+            <div class="flex items-center justify-between">
+                <span class="bg-gradient-to-r from-green-500 to-emerald-600 text-white px-4 py-2 rounded-xl font-bold">
+                    R$50
+                </span>
+                <span class="text-sm text-gray-500">{{ aula.data|date:"d/m" }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-span-3 text-center py-20">
+            <i class="fas fa-calendar-times text-6xl text-gray-300 mb-6"></i>
+            <p class="text-2xl text-gray-500">Nenhuma aula agendada</p>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
+</title>
 </head>
 <body>
-$END$
+
 </body>
 </html>

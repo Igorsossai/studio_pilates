@@ -19,4 +19,6 @@ urlpatterns = [
     path("google-connect/", views.google_calendar_connect, name="google_connect"),
     path("google-callback/", views.google_calendar_callback, name="google_callback"),
     path("relatorio/", views.relatorio_financeiro, name="relatorio_financeiro"),
+    path('', views.index, name='index'),
+
 ]

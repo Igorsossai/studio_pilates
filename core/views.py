@@ -2,6 +2,12 @@ from django.shortcuts import render, redirect
 from django.db.models import Sum, Count  # para relatórios
 from django.contrib import messages
 # ... outros imports ...
+from django.shortcuts import render
+from .models import Aula  # seu model
+
+def index(request):
+    ultimas_aulas = Aula.objects.all()[:6]  # últimas 6
+    return render(request, 'index.html', {'ultimas_aulas': ultimas_aulas})
 from .models import Paciente, Profissional, Servico
 from .forms import PacienteForm, ProfissionalForm, ServicoForm
 

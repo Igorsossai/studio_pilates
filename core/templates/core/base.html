@@ -1,33 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title><!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Studio Pilates</title>
+    <title>{% block title %}Studio Fisio{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Studio Pilates - Sistema</h1>
-   <nav>
-    <a href="{% url 'core:paciente_list' %}">Pacientes</a> |
-    <a href="{% url 'core:profissional_list' %}">Profissionais</a> |
-    <a href="{% url 'core:servico_list' %}">Serviços</a> |
-    <a href="{% url 'core:atendimento_list' %}">Atendimentos</a> |
-    <a href="{% url 'core:comissao_list' %}">Comissões</a> |
-       <a href="{% url 'core:agenda_hoje' %}">Agenda</a> |
-       <a href="{% url 'core:relatorio_financeiro' %}">Relatórios</a> |
+<body class="bg-gradient-to-br from-slate-50 to-blue-50">
+    <!-- Navbar -->
+    <nav class="bg-white shadow-lg">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                    <i class="fas fa-dumbbell mr-3"></i>Studio Fisio
+                </h1>
+                <a href="{% url 'aulas_list' %}" class="bg-blue-600 text-white px-6 py-2 rounded-xl hover:bg-blue-700">
+                    Agendar Aula
+                </a>
+            </div>
+        </div>
+    </nav>
 
-</nav>
+    <main class="container mx-auto px-6 py-12">
+        {% block content %}{% endblock %}
+    </main>
 
-    <hr>
-    {% block content %}{% endblock %}
-</body>
-</html>
-</title>
-</head>
-<body>
-
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white py-12 mt-20">
+        <div class="container mx-auto px-6 text-center">
+            <p>Studio Fisio Colatina-ES | (27) 99999-9999 | 2026</p>
+        </div>
+    </footer>
 </body>
 </html>
