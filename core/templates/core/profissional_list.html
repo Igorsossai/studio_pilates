@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Profissionais</h2>
+<a href="{% url 'core:profissional_create' %}">Novo profissional</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Nome</th>
+        <th>Email</th>
+        <th>Registro</th>
+        <th>% Comissão</th>
+        <th>Ativo</th>
+        <th>Google Calendar</th>
+    </tr>
+    {% for p in profissionais %}
+    <tr>
+        <td>{{ p.nome_completo }}</td>
+        <td>{{ p.email|default:"—" }}</td>
+        <td>{{ p.registro_conselho|default:"—" }}</td>
+        <td>{{ p.porcentagem_comissao }}%</td>
+        <td>{{ p.ativo|yesno:"Sim,Não" }}</td>
+        <td>
+            {% if p.googlecalendartoken %}
+                ✅ Conectado
+            {% else %}
+                <a href="{% url 'core:google_connect' %}?profissional_id={{ p.id }}"
+                   style="background: #4285f4; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px;">
+                   Conectar Google
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="6">Nenhum profissional cadastrado.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+</title>
+</head>
+<body>
+
+</body>
+</html>

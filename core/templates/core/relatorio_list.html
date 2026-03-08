@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Relatórios</h2>
+<div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+    <a href="{% url 'core:relatorio_financeiro' %}?mes=2026-03"
+       style="display: inline-block; background: #28a745; color: white; padding: 15px 30px;
+              text-decoration: none; border-radius: 6px; font-weight: bold;">
+       📊 Relatório Financeiro - Março/2026 (PDF)
+    </a>
+</div>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

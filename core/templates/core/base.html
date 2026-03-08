@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title><!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Studio Pilates</title>
+</head>
+<body>
+    <h1>Studio Pilates - Sistema</h1>
+   <nav>
+    <a href="{% url 'core:paciente_list' %}">Pacientes</a> |
+    <a href="{% url 'core:profissional_list' %}">Profissionais</a> |
+    <a href="{% url 'core:servico_list' %}">Serviços</a> |
+    <a href="{% url 'core:atendimento_list' %}">Atendimentos</a> |
+    <a href="{% url 'core:comissao_list' %}">Comissões</a> |
+       <a href="{% url 'core:agenda_hoje' %}">Agenda</a> |
+       <a href="{% url 'core:relatorio_financeiro' %}">Relatórios</a> |
+
+</nav>
+
+    <hr>
+    {% block content %}{% endblock %}
+</body>
+</html>
+</title>
+</head>
+<body>
+
+</body>
+</html>

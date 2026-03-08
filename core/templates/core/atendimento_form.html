@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Novo agendamento</h2>
+<form method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+    <p><strong>Observação:</strong> Valor será calculado automaticamente pelo preço do serviço.</p>
+    <button type="submit">Agendar</button>
+    <a href="{% url 'core:atendimento_list' %}">Cancelar</a>
+</form>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

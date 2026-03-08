@@ -1,0 +1,16 @@
+# Ambiente
+.venv/
+__pycache__/
+*.pyc
+db.sqlite3
+
+# Credenciais
+core/credentials.json
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Deploy
+staticfiles/

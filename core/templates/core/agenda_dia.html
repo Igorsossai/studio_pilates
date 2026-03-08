@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Agenda - {{ data }}</h2>
+<div style="margin-bottom: 20px;">
+    <a href="{% url 'core:agenda_dia' anterior %}">← Anterior</a> |
+    <a href="{% url 'core:agenda_hoje' %}">Hoje</a> |
+    <a href="{% url 'core:agenda_dia' proximo %}">Próximo →</a>
+</div>
+
+<a href="{% url 'core:atendimento_create' %}">+ Novo Agendamento</a>
+
+<style>
+    .profissional { margin-bottom: 30px; border: 1px solid #ddd; padding: 15px; }
+    .hora { display: inline-block; width: 80px; margin: 2px; padding: 8px; text-align: center; }
+    .livre { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .ocupado { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+</style>
+
+{% for item in agenda %}
+<div class="profissional">
+    <h3>{{ item.profissional.nome_completo }}
+        <small>({{ item.profissional.porcentagem_comissao }}% comissão)</small>
+    </h3>
+
+    {% for h in item.horarios %}
+        <span class="hora {% if h.ocupado %}ocupado{% else %}livre{% endif %}">
+            {% if h.ocupado %}
+                {{ h.hora }} - {{ h.atendimento.paciente.nome }}
+                <br><small>{{ h.atendimento.servico.nome }}</small>
+            {% else %}
+                {{ h.hora }} <small>(livre)</small>
+            {% endif %}
+        </span>
+    {% endfor %}
+</div>
+{% empty %}
+<p>Nenhum profissional ativo.</p>
+{% endfor %}
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Serviços</h2>
+<a href="{% url 'core:servico_create' %}">Novo serviço</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Nome</th>
+        <th>Tipo</th>
+        <th>Duração (min)</th>
+        <th>Preço</th>
+    </tr>
+    {% for s in servicos %}
+    <tr>
+        <td>{{ s.nome }}</td>
+        <td>{{ s.get_tipo_display }}</td>
+        <td>{{ s.duracao_minutos }}</td>
+        <td>R$ {{ s.preco_padrao }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4">Nenhum serviço cadastrado.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

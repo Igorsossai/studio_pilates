@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Confirmar atendimento</h2>
+
+<div style="background: #f0f8ff; padding: 20px; border-radius: 8px;">
+    <p><strong>Paciente:</strong> {{ atendimento.paciente.nome }}</p>
+    <p><strong>Serviço:</strong> {{ atendimento.servico.nome }}</p>
+    <p><strong>Data/Hora:</strong> {{ atendimento.data }} {{ atendimento.hora_inicio }} - {{ atendimento.hora_fim }}</p>
+    <p><strong>Profissional:</strong> {{ atendimento.profissional.nome_completo }}</p>
+    <p><strong>Valor:</strong> R$ {{ atendimento.valor_cobrado }}</p>
+
+    <h4>Comissão calculada:</h4>
+    <p><strong>{{ atendimento.profissional.nome_completo }}:</strong>
+       R$ {{ atendimento.valor_cobrado|floatformat:2|multiply:atendimento.profissional.porcentagem_comissao|div:100|floatformat:2 }}
+       ({{ atendimento.profissional.porcentagem_comissao }}%)
+    </p>
+</div>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" style="background: green; color: white; padding: 10px 20px;">Confirmar Realizado</button>
+    <a href="{% url 'core:atendimento_list' %}" style="margin-left: 10px;">Cancelar</a>
+</form>
+
+{% if messages %}
+    <ul>
+    {% for message in messages %}
+        <li style="color: {{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

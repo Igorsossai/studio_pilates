@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Comissões</h2>
+<a href="{% url 'core:atendimento_list' %}">← Voltar Atendimentos</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Data</th>
+        <th>Paciente</th>
+        <th>Serviço</th>
+        <th>Profissional</th>
+        <th>Valor Serviço</th>
+        <th>Comissão</th>
+        <th>Pago?</th>
+    </tr>
+    {% for c in comissoes %}
+    <tr>
+        <td>{{ c.atendimento.data }}</td>
+        <td>{{ c.atendimento.paciente.nome }}</td>
+        <td>{{ c.atendimento.servico.nome }}</td>
+        <td>{{ c.profissional.nome_completo }}</td>
+        <td>R$ {{ c.atendimento.valor_cobrado }}</td>
+        <td><strong>R$ {{ c.valor }}</strong></td>
+        <td>{{ c.pago|yesno:"Sim,Não" }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="7">Nenhuma comissão gerada. Marque atendimentos como realizados.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>

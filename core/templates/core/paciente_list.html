@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% extends "core/base.html" %}
+
+{% block content %}
+<h2>Pacientes</h2>
+<a href="{% url 'core:paciente_create' %}">Novo paciente</a>
+<table border="1" cellpadding="5">
+    <tr>
+        <th>Nome</th>
+        <th>Telefone</th>
+        <th>Email</th>
+    </tr>
+    {% for p in pacientes %}
+    <tr>
+        <td>{{ p.nome }}</td>
+        <td>{{ p.telefone }}</td>
+        <td>{{ p.email }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="3">Nenhum paciente cadastrado.</td></tr>
+    {% endfor %}
+</table>
+{% endblock %}
+</title>
+</head>
+<body>
+
+</body>
+</html>
