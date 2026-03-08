@@ -17,11 +17,11 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-sua-chave-local')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 # Hosts permitidos
-ALLOWED_HOSTS = [
-    '127.0.0.1',
-    'localhost',
-    '*.onrender.com',  # Render.com
-]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.onrender.com']
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 INSTALLED_APPS = [
@@ -36,6 +36,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+'django.middleware.security.SecurityMiddleware',
+  'whitenoise.middleware.WhiteNoiseMiddleware', # Adicione esta linha
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
