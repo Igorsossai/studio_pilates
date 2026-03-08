@@ -1,0 +1,564 @@
+{% extends 'admin_base.html' %}
+{% load static %}
+
+{% block title %}Take Attendance - FitnessPro Admin{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Attendance Specific Styles */
+    .attendance-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .attendance-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .attendance-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: var(--primary-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 1rem;
+    }
+
+    .attendance-subtitle {
+        color: var(--text-secondary);
+        font-size: 1.1rem;
+        margin-bottom: 0;
+    }
+
+    .attendance-form {
+        background: var(--bg-card);
+        backdrop-filter: var(--blur-md);
+        border: 1px solid var(--border-color);
+        border-radius: 2rem;
+        padding: 3rem 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .attendance-form::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--primary-gradient);
+    }
+
+    .form-section {
+        margin-bottom: 2rem;
+    }
+
+    .form-section-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--accent-primary);
+        margin-bottom: 1.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .icon-wrapper {
+        width: 40px;
+        height: 40px;
+        background: var(--primary-gradient);
+        border-radius: 0.75rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .input-group-enhanced {
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+
+    .input-group-enhanced:last-child {
+        margin-bottom: 0;
+    }
+
+    .input-label {
+        display: block;
+        color: var(--text-secondary);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+
+    .input-wrapper {
+        position: relative;
+    }
+
+    .input-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--accent-primary);
+        z-index: 2;
+        font-size: 1.1rem;
+    }
+
+    .form-control-enhanced {
+        background: var(--bg-secondary);
+        backdrop-filter: var(--blur-sm);
+        border: 2px solid var(--border-color);
+        border-radius: 1rem;
+        color: var(--text-primary);
+        padding: 1rem 1rem 1rem 3rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 100%;
+    }
+
+    .form-control-enhanced:focus {
+        background: var(--bg-secondary);
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        color: var(--text-primary);
+        outline: none;
+        transform: translateY(-2px);
+    }
+
+    .form-control-enhanced:hover {
+        border-color: var(--border-hover);
+        transform: translateY(-1px);
+    }
+
+    .form-control-enhanced::placeholder {
+        color: var(--text-muted);
+        font-weight: 500;
+    }
+
+    .attendance-submit {
+        text-align: center;
+        margin-top: 2rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--border-color);
+    }
+
+    .btn-attendance {
+        background: var(--primary-gradient);
+        border: none;
+        padding: 1rem 3rem;
+        font-weight: 700;
+        border-radius: 2rem;
+        font-size: 1.1rem;
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        position: relative;
+        overflow: hidden;
+        min-width: 280px;
+    }
+
+    .btn-attendance::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .btn-attendance:hover {
+        transform: translateY(-3px);
+        box-shadow: var(--shadow-glow);
+        filter: brightness(1.1);
+        color: white;
+    }
+
+    .btn-attendance:hover::before {
+        left: 100%;
+    }
+
+    .btn-attendance:active {
+        transform: translateY(-1px);
+    }
+
+    .attendance-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+    }
+
+    .instruction-card {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-color);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .instruction-title {
+        color: var(--accent-primary);
+        font-weight: 600;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .instruction-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .instruction-list li {
+        padding: 0.5rem 0;
+        color: var(--text-secondary);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+    }
+
+    .instruction-list li::before {
+        content: '✓';
+        color: var(--accent-success);
+        font-weight: bold;
+        width: 20px;
+        text-align: center;
+    }
+
+    /* Success Alert Enhancement */
+    .alert-enhanced {
+        background: var(--bg-card);
+        backdrop-filter: var(--blur-md);
+        border: 1px solid var(--accent-success);
+        border-radius: 1rem;
+        color: var(--text-primary);
+        padding: 1.25rem 1.75rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .alert-enhanced::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: var(--accent-success);
+    }
+
+    .alert-enhanced .alert-icon {
+        color: var(--accent-success);
+        margin-right: 0.75rem;
+        font-size: 1.2rem;
+    }
+
+    /* Animation for form inputs */
+    @keyframes slideInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .input-group-enhanced {
+        animation: slideInUp 0.5s ease-out;
+    }
+
+    .input-group-enhanced:nth-child(1) { animation-delay: 0.1s; }
+    .input-group-enhanced:nth-child(2) { animation-delay: 0.2s; }
+    .input-group-enhanced:nth-child(3) { animation-delay: 0.3s; }
+    .input-group-enhanced:nth-child(4) { animation-delay: 0.4s; }
+    .input-group-enhanced:nth-child(5) { animation-delay: 0.5s; }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .attendance-container {
+            margin: 0;
+        }
+
+        .attendance-form {
+            padding: 2rem 1.5rem;
+            border-radius: 1.5rem;
+        }
+
+        .attendance-title {
+            font-size: 2rem;
+        }
+
+        .form-control-enhanced {
+            padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+        }
+
+        .btn-attendance {
+            min-width: auto;
+            width: 100%;
+            padding: 1rem 2rem;
+        }
+
+        .attendance-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .attendance-form {
+            padding: 1.5rem 1rem;
+        }
+
+        .attendance-title {
+            font-size: 1.8rem;
+        }
+
+        .form-section-title {
+            font-size: 1.1rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="attendance-container" data-aos="fade-up">
+    <!-- Attendance Header -->
+    <div class="attendance-header" data-aos="fade-up" data-aos-delay="100">
+        <h1 class="attendance-title">Take Attendance</h1>
+        <p class="attendance-subtitle">Mark members as present by entering their ID numbers</p>
+    </div>
+
+    <!-- Success Message -->
+    {% if msg %}
+    <div class="alert-enhanced" role="alert" data-aos="fade-up" data-aos-delay="200">
+        <i class="fas fa-check-circle alert-icon"></i>
+        {{msg}}
+    </div>
+    {% endif %}
+
+    <!-- Instructions Card -->
+    <div class="instruction-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="instruction-title">
+            <i class="fas fa-info-circle"></i>
+            How to Take Attendance
+        </div>
+        <ul class="instruction-list">
+            <li>Enter the member ID numbers in the fields below</li>
+            <li>Use 0 for empty slots if fewer than 5 members are present</li>
+            <li>Click "Mark as Present" to record attendance</li>
+            <li>Each member's attendance count will be automatically updated</li>
+        </ul>
+    </div>
+
+    <!-- Attendance Form -->
+    <div class="attendance-form" data-aos="fade-up" data-aos-delay="400">
+        <form method="post" action="/attendance">
+            {% csrf_token %}
+            
+            <div class="form-section">
+                <h3 class="form-section-title">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-clipboard-check"></i>
+                    </div>
+                    Enter Member IDs
+                </h3>
+
+                <div class="attendance-grid">
+                    <div class="input-group-enhanced">
+                        <label class="input-label">Member ID #1</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag input-icon"></i>
+                            <input 
+                                type="number" 
+                                value="0" 
+                                class="form-control-enhanced" 
+                                name="1" 
+                                placeholder="Enter member ID"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group-enhanced">
+                        <label class="input-label">Member ID #2</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag input-icon"></i>
+                            <input 
+                                type="number" 
+                                value="0" 
+                                class="form-control-enhanced" 
+                                name="2" 
+                                placeholder="Enter member ID"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group-enhanced">
+                        <label class="input-label">Member ID #3</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag input-icon"></i>
+                            <input 
+                                type="number" 
+                                value="0" 
+                                class="form-control-enhanced" 
+                                name="3" 
+                                placeholder="Enter member ID"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group-enhanced">
+                        <label class="input-label">Member ID #4</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag input-icon"></i>
+                            <input 
+                                type="number" 
+                                value="0" 
+                                class="form-control-enhanced" 
+                                name="4" 
+                                placeholder="Enter member ID"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="input-group-enhanced">
+                        <label class="input-label">Member ID #5</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-hashtag input-icon"></i>
+                            <input 
+                                type="number" 
+                                value="0" 
+                                class="form-control-enhanced" 
+                                name="5" 
+                                placeholder="Enter member ID"
+                                min="0"
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="attendance-submit">
+                <button type="submit" class="btn-attendance">
+                    <i class="fas fa-check-double me-2"></i>
+                    Mark as Present
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Auto-focus first input
+        const firstInput = document.querySelector('.form-control-enhanced');
+        if (firstInput) {
+            firstInput.focus();
+        }
+
+        // Handle Enter key to move to next input
+        const inputs = document.querySelectorAll('.form-control-enhanced');
+        inputs.forEach((input, index) => {
+            input.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (index < inputs.length - 1) {
+                        inputs[index + 1].focus();
+                    } else {
+                        // If it's the last input, submit the form
+                        document.querySelector('.btn-attendance').click();
+                    }
+                }
+            });
+
+            // Clear placeholder behavior
+            input.addEventListener('focus', function() {
+                if (this.value === '0') {
+                    this.value = '';
+                }
+                this.parentElement.parentElement.style.transform = 'scale(1.02)';
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value === '') {
+                    this.value = '0';
+                }
+                this.parentElement.parentElement.style.transform = 'scale(1)';
+            });
+
+            // Input validation
+            input.addEventListener('input', function() {
+                const value = parseInt(this.value);
+                if (value < 0) {
+                    this.value = '0';
+                }
+            });
+        });
+
+        // Form submission with loading state
+        const form = document.querySelector('form');
+        const submitBtn = document.querySelector('.btn-attendance');
+        const originalText = submitBtn.innerHTML;
+
+        form.addEventListener('submit', function(e) {
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Processing...';
+            submitBtn.disabled = true;
+
+            // Re-enable button after 3 seconds in case of error
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }, 3000);
+        });
+
+        // Enhanced hover effects
+        const inputWrappers = document.querySelectorAll('.input-wrapper');
+        inputWrappers.forEach(wrapper => {
+            const input = wrapper.querySelector('.form-control-enhanced');
+            const icon = wrapper.querySelector('.input-icon');
+
+            input.addEventListener('focus', () => {
+                icon.style.color = 'var(--accent-primary)';
+                icon.style.transform = 'translateY(-50%) scale(1.1)';
+            });
+
+            input.addEventListener('blur', () => {
+                icon.style.color = 'var(--text-secondary)';
+                icon.style.transform = 'translateY(-50%) scale(1)';
+            });
+        });
+
+        // Success message auto-hide
+        const alertElement = document.querySelector('.alert-enhanced');
+        if (alertElement) {
+            setTimeout(() => {
+                alertElement.style.opacity = '0';
+                alertElement.style.transform = 'translateY(-20px)';
+                setTimeout(() => {
+                    alertElement.remove();
+                }, 500);
+            }, 5000);
+        }
+    });
+</script>
+{% endblock %}
