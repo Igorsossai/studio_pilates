@@ -107,3 +107,6 @@ def relatorio_financeiro(request):
     # PDF fake por enquanto
     response = HttpResponse("Relatório em desenvolvimento", content_type='text/plain')
     return response
+# 👇 COMENTA Google por enquanto
+    # path('google-connect/', views.google_calendar_connect, name='google_connect'),
+    # path('google-callback/', views.google_calendar_callback, name='google_callback'),
